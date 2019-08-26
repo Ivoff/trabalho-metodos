@@ -1,3 +1,3 @@
 module.exports = (x) => {
-	return Math.log(x) - x + 2;
+	return x**3 - 9*x + 3;
 }

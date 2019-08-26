@@ -16,6 +16,7 @@ module.exports = function(a, b, e, f){
                 output.push({
                     "a": a,
                     "b": b,
+                    "x": x,
                     "f(a)": fa,
                     "f(b)": fb,
                     "f(x)": fx
