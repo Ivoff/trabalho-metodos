@@ -54,66 +54,88 @@ let handler = (data) => {
 }
 
 //(-1, 1) (0 ,1) (1 ,0) (2, -1) (3, -2)
+function lagrange(input){
+    let rawInput = input;
+    let pol = [];
+    let l = [];
+    let denominator = [];
 
-let rawInput = [[-1, -3],[0, 2],[1, 1],[2, -4]];
-let pol = [];
-let l = [];
-let denominator = [];
+    for(let i = 0; i < rawInput.length; i += 1){
+        pol.push([new Unknown(1, 1), rawInput[i][0]]);
+    }
 
-for(let i = 0; i < rawInput.length; i += 1){
-    pol.push([new Unknown(1, 1), rawInput[i][0]]);
-}
+    for(let i = 0; i < rawInput.length; i += 1){
+        var aux = pol.slice();
 
-for(let i = 0; i < rawInput.length; i += 1){
-    var aux = pol.slice();
-    
-    aux.splice(i, 1);
+        aux.splice(i, 1);
 
-    handler( aux );
-    aux = aux[0];    
+        handler( aux );
+        aux = aux[0];    
 
-    l.push(aux);
+        l.push(aux);
 
-    aux = 1;
-    for(let j = 0; j < rawInput.length; j += 1){
-        if(j != i){
-            aux *= rawInput[i][0] - rawInput[j][0]
+        aux = 1;
+        for(let j = 0; j < rawInput.length; j += 1){
+            if(j != i){
+                aux *= rawInput[i][0] - rawInput[j][0]
+            }
+        }
+        denominator.push(aux);
+    }
+    for(let i = 0; i < l.length; i += 1){
+        l[i] = chuveirinho(l[i], [1/denominator[i]]);
+    }
+
+    for(let i = 0; i < l.length; i += 1){
+        let j = 0;
+        l[i].forEach(element => {
+            if(element instanceof Unknown){
+                l[i][j] = element.mult(rawInput[i][1]);
+            }else{
+                l[i][j] = element*rawInput[i][1];
+            }
+            j += 1;
+        });
+    }
+
+    for(let i = 0; i < l.length; i += 1){
+        for(let j = 1; j < l.length; j += 1){
+            if(l[0][i] instanceof Unknown){
+                l[0][i] = l[0][i].add(l[j][i]);
+            }else{
+                l[0][i] += l[j][i];
+            }
         }
     }
-    denominator.push(aux);
-}
-for(let i = 0; i < l.length; i += 1){
-    l[i] = chuveirinho(l[i], [1/denominator[i]]);
-}
 
-for(let i = 0; i < l.length; i += 1){
-    let j = 0;
-    l[i].forEach(element => {
-        if(element instanceof Unknown){
-            l[i][j] = element.mult(rawInput[i][1]);
+    let output = "";
+    l = l[0];
+    for(let i = 0; i < l.length; i += 1){
+        if(l[i] instanceof Unknown){
+            if(l[i].coefficient >= 0 && i == 0){
+                output += (""+l[i].coefficient.toFixed(3))+"x^"+(""+l[i].degree)+" "
+            }
+            else if(l[i].coefficient >= 0)
+                output += "+"+(""+l[i].coefficient.toFixed(3))+"x^"+(""+l[i].degree)+" ";
+            else{
+                output += (""+l[i].coefficient.toFixed(3))+"x^"+(""+l[i].degree)+" ";
+            }
         }else{
-            l[i][j] = element*rawInput[i][1];
-        }
-        j += 1;
-    });
-}
-
-for(let i = 0; i < l.length; i += 1){
-    for(let j = 1; j < l.length; j += 1){
-        if(l[0][i] instanceof Unknown){
-            l[0][i] = l[0][i].add(l[j][i]);
-        }else{
-            l[0][i] += l[j][i];
+            if(l[i] >= 0 && i == 0){
+                output += ""+l[i];
+            }
+            else if(l[i] >= 0){
+                output += "+"+l[i];
+            }else{
+                output += ""+l[i];
+            }
         }
     }
+    return output;
 }
-
-l = l[0];
-
-//console.log(l);
-
 module.exports = {
     Unknown,
     chuveirinho, 
-    handler
+    handler,
+    lagrange
 }
