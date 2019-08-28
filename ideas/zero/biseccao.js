@@ -1,4 +1,4 @@
-/*function f(x){
+function f(x){
     return ;
 }
 
@@ -34,4 +34,4 @@ function bissection(a, b, e, f){
     }
 };
 
-console.log( bissection() );*/
+console.log( bissection() );

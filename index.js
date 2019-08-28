@@ -15,6 +15,8 @@ const knownStandardDeviation = require("./confidenceInterval/knownStandardDeviat
 const unknownStandardDeviation = require("./confidenceInterval/unknownStandardDeviation");
 
 const kendall = require("./correlationCoefficient/kendall");
+const pearson = require("./correlationCoefficient/pearson");
+const spearman = require("./correlationCoefficient/spearman");
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -275,6 +277,16 @@ app.post("/intervaloConfianca/desconhecido", (req, res) => {
 app.post("/kendall", (req, res) => {
     const content = req.body;
     res.send(kendall(content.x, content.y));
+});
+
+app.post("/pearson", (req, res) => {
+    const content = req.body;
+    res.send({"correlacao": pearson(content.x, content.y)});
+});
+
+app.post("/spearman", (req, res) => {
+    const content = req.body;
+    res.send({"correlacao": spearman(content.x, content.y)});
 });
 
 app.listen(PORT, ()  =>{
