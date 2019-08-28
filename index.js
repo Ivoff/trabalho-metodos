@@ -14,6 +14,8 @@ const splineLinear = require("./interpolation/splineLinear");
 const knownStandardDeviation = require("./confidenceInterval/knownStandardDeviation");
 const unknownStandardDeviation = require("./confidenceInterval/unknownStandardDeviation");
 
+const kendall = require("./correlationCoefficient/kendall");
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -271,7 +273,8 @@ app.post("/intervaloConfianca/desconhecido", (req, res) => {
 });
 
 app.post("/kendall", (req, res) => {
-    
+    const content = req.body;
+    res.send(kendall(content.x, content.y));
 });
 
 app.listen(PORT, ()  =>{
