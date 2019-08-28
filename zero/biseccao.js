@@ -1,26 +1,14 @@
-function f(x){
-    return x**2 + 2*x -1;
+/*function f(x){
+    return ;
 }
 
-function bissection(a, b, e){
-    let n = 0;
+function bissection(a, b, e, f){
     let output = [];
     let x = (a+b)/2;
     let fa = f(a), fb = f(b), fx = f(x);
-    output.push({
-        "a": a,
-        "b": b,
-        "x": x,
-        "f(a)": fa,
-        "f(b)": fb,
-        "f(x)": fx
-    });
     if(fa*fb < 0){
         do{
-            if(fx == 0){
-                return output;
-            }
-            else if(fa*fx < 0){
+            if(fa*fx < 0){
                 b = x;
                 fb = f(x);
             }else{
@@ -37,15 +25,13 @@ function bissection(a, b, e){
                 "f(b)": fb,
                 "f(x)": fx
             });
-            n += 1
-            if(n == 100)
-                break;
+
         }while(Math.abs(fx) > e)
         return output;
     }
     else{
-        return `f(-1)*f(1) >= 0`;
+        return -1;
     }
 };
 
-console.log( bissection(-1, 1, 0.000001) );
+console.log( bissection() );*/
