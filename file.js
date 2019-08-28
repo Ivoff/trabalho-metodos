@@ -1,41 +1,40 @@
 function f(x){
-    return x**2 + 2*x -1;
+    return x**3 - 9*x +3;
 }
 
-function f_linha(x){
-    return 2*x + 2;
-}
-
-function newtonRaphson(x0, e){
-    let xMenosUm = x0;
-    let fxMenosUm = f(xMenosUm);
-    let x = xMenosUm - (fxMenosUm/f_linha(xMenosUm))
-    let fx = f(x);
-    let i = 0;
-    let output = [];    
+function secante(x1, x2, e){
+    let fx1 = f(x1);
+    let fx2 = f(x2);
+    let x;
+    let fx;
+    let k = 1;
+    let output = [];
     output.push({
-            "x": x,
-            "fx": fx,
-            "x-1": xMenosUm,
-            "fx-1": fxMenosUm
+        "k": k,
+        "x": x1,
+        "fx": fx1
     });
-    while(Math.abs(fx) > e){        
-        xMenosUm = x;
-        fxMenosUm = fx;
-        x = xMenosUm - (fxMenosUm/f_linha(xMenosUm));
+    k += 1;
+    output.push({
+        "k": k,
+        "x": x2,
+        "fx": fx2
+    });
+    do{
+        x = (x1*fx2 - x2*fx1)/(fx2-fx1);
         fx = f(x);
+        x2 = x1;
+        fx2 = fx1;
+        x1 = x;
+        fx1 = fx;
+        k += 1;
         output.push({
+            "k": k,
             "x": x,
-            "fx": fx,
-            "x-1": xMenosUm,
-            "fx-1": fxMenosUm
+            "fx": fx
         });
-        i += 1;
-        if(i == 200){
-            return "limite de 200 iteracoes atigidas";            
-        }
-    }
+    }while(Math.abs(fx) > e)
     return output;
 }
 
-console.log( newtonRaphson(5, 1e-9) );
+console.log( secante( 2, 1, 0.0001 ) );
