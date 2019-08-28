@@ -133,6 +133,57 @@ console.log( falsePosition(${content.a}, ${content.b}, ${content.e}) );`;
     });
 });
 
+app.post("/newtonRaphson", (req, res) => {
+    const content = req.body;
+    let inputFunction = `function f(x){
+    return ${functionParser(content.f)};
+}
+
+function f_linha(x){
+    return ${functionParser(content.derivativa)};
+}
+
+function newtonRaphson(x0, e){
+    let xMenosUm = x0;
+    let fxMenosUm = f(xMenosUm);
+    let x = xMenosUm - (fxMenosUm/f_linha(xMenosUm))
+    let fx = f(x);
+    let i = 0;
+    let output = [];    
+    output.push({
+            "x": x,
+            "fx": fx,
+            "x-1": xMenosUm,
+            "fx-1": fxMenosUm
+    });
+    while(Math.abs(fx) > e){        
+        xMenosUm = x;
+        fxMenosUm = fx;
+        x = xMenosUm - (fxMenosUm/f_linha(xMenosUm));
+        fx = f(x);
+        output.push({
+            "x": x,
+            "fx": fx,
+            "x-1": xMenosUm,
+            "fx-1": fxMenosUm
+        });
+        i += 1;
+        if(i == 200){
+            return "limite de 200 iteracoes atigidas";            
+        }
+    }
+    return output;
+}
+
+console.log( newtonRaphson(${content.xMenosUm}, ${content.e}) );`;
+    fs.writeFile("file.js", inputFunction, err => {
+        console.log(err);
+    });    
+    child_process.exec('node file.js', (err, stdout, stderr)=>{                
+        res.send(stdout);
+    });
+});
+
 app.post("/lagrange", (req, res) => {
     let input = req.body;
     let x = input.x;

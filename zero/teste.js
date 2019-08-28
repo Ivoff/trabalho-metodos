@@ -1,15 +1,15 @@
 function f(x){
-    return x**2 + 2*x -1;
+    return ;
 }
 
 function f_linha(x){
-    return 2*x + 2;
+    return ;
 }
 
 function newtonRaphson(x0, e){
     let xMenosUm = x0;
     let fxMenosUm = f(xMenosUm);
-    let x = xMenosUm - (fxMenosUm/f_linha(xMenosUm))
+    let x = xMenosUm - (fxMenosUm/f_linha(x))
     let fx = f(x);
     let i = 0;
     let output = [];    
@@ -38,4 +38,4 @@ function newtonRaphson(x0, e){
     return output;
 }
 
-console.log( newtonRaphson(5, 1e-9) );
+console.log( newtonRaphson() );
