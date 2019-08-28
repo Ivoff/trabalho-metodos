@@ -1,12 +1,26 @@
-module.exports = (a, b, f, e) =>{    
+function f(x){
+    return ;
+}
+function falsePosition(a, b, e){
     let fa = f(a);
     let fb = f(b);
     let x = ((a*fb)-(b*fa))/(fb-fa);
     let fx = f(x);
-
+    output = [];
+    output.push({
+        "a": a,
+        "b": b,
+        "x": x,
+        "f(a)": fa,
+        "f(b)": fb,
+        "f(x)": fx
+    });
     if(fa*fb < 0){
         do{
-            if(fa*fx < 0){
+            if(fx == 0){
+                return output;
+            }
+            else if(fa*fx < 0){
                 b = x;
                 fb = f(x);
             }else{
@@ -15,6 +29,18 @@ module.exports = (a, b, f, e) =>{
             }
             x = ((a*fb)-(b*fa))/(fb-fa);
             fx = f(x);
+            output.push({
+                "a": a,
+                "b": b,
+                "x": x,
+                "f(a)": fa,
+                "f(b)": fb,
+                "f(x)": fx
+            });
         }while(Math.abs(fx) > e)
+        return output;
+    }
+    else{
+        return `f(-1)*f(1) >= 0`;
     }
 }

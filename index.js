@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-//const exec = require('child_process').exec;
 const fs = require('fs');
 const functionParser = require('./functionParser');
-const util = require('util');
 const child_process = require('child_process');
 
 const PORT = process.env.PORT || 3000; 
@@ -23,7 +21,7 @@ app.post("/bisection", (req, res) => {
     return ${functionParser(content.f)};
 }
 
-function bissection(a, b, e){
+function bisection(a, b, e){
     let n = 0;
     let output = [];
     let x = (a+b)/2;
@@ -69,7 +67,7 @@ function bissection(a, b, e){
     }
 };
 
-console.log( bissection(${content.a}, ${content.b}, ${content.e}) );`;
+console.log( bisection(${content.a}, ${content.b}, ${content.e}) );`;
     fs.writeFile("file.js", inputFunction, err => {
         console.log(err);
     });    
@@ -78,8 +76,61 @@ console.log( bissection(${content.a}, ${content.b}, ${content.e}) );`;
     });
 });
 
-app.post("false-position", (req, res) => {
-
+app.post("/false-position", (req, res) => {
+    const content = req.body;
+    let inputFunction = `function f(x){
+    return ${functionParser(content.f)};
+}
+function falsePosition(a, b, e){
+    let fa = f(a);
+    let fb = f(b);
+    let x = ((a*fb)-(b*fa))/(fb-fa);
+    let fx = f(x);
+    output = [];
+    output.push({
+        "a": a,
+        "b": b,
+        "x": x,
+        "f(a)": fa,
+        "f(b)": fb,
+        "f(x)": fx
+    });
+    if(fa*fb < 0){
+        do{
+            if(fx == 0){
+                return output;
+            }
+            else if(fa*fx < 0){
+                b = x;
+                fb = f(x);
+            }else{
+                a = x;
+                fa = f(x);
+            }
+            x = ((a*fb)-(b*fa))/(fb-fa);
+            fx = f(x);
+            output.push({
+                "a": a,
+                "b": b,
+                "x": x,
+                "f(a)": fa,
+                "f(b)": fb,
+                "f(x)": fx
+            });
+        }while(Math.abs(fx) > e)
+        return output;
+    }
+    else{
+        return \`f(${content.a})*f(${content.b}) >= 0\`;
+    }
+};
+console.log( falsePosition(${content.a}, ${content.b}, ${content.e}) );`;
+    fs.writeFile("file.js", inputFunction, err => {
+        console.log(err);
+    });    
+    child_process.exec('node file.js', (err, stdout, stderr)=>{                
+        res.send(stdout);
+    });
 });
 
 app.post("/lagrange", (req, res) => {
