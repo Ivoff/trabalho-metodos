@@ -22,10 +22,10 @@ let subArray = (array, inclusiveBeggining, exclusiveEnding)=>{
     return output;
 };
 
-let data = {
+/*let data = {
     "x": [1, 2, 3],
     "y": [1, 7, 10]
-}
+}*/
 function formaNewton(data){
     let d = [];
     d.push(data.y.slice());

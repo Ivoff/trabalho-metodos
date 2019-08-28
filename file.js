@@ -1,40 +1,47 @@
 function f(x){
-    return x**3 - 9*x +3;
+    return x**2 + 2*x -1;
 }
-
-function secante(x1, x2, e){
-    let fx1 = f(x1);
-    let fx2 = f(x2);
-    let x;
-    let fx;
-    let k = 1;
-    let output = [];
+function falsePosition(a, b, e){
+    let fa = f(a);
+    let fb = f(b);
+    let x = ((a*fb)-(b*fa))/(fb-fa);
+    let fx = f(x);
+    output = [];
     output.push({
-        "k": k,
-        "x": x1,
-        "fx": fx1
+        "a": a,
+        "b": b,
+        "x": x,
+        "f(a)": fa,
+        "f(b)": fb,
+        "f(x)": fx
     });
-    k += 1;
-    output.push({
-        "k": k,
-        "x": x2,
-        "fx": fx2
-    });
-    do{
-        x = (x1*fx2 - x2*fx1)/(fx2-fx1);
-        fx = f(x);
-        x2 = x1;
-        fx2 = fx1;
-        x1 = x;
-        fx1 = fx;
-        k += 1;
-        output.push({
-            "k": k,
-            "x": x,
-            "fx": fx
-        });
-    }while(Math.abs(fx) > e)
-    return output;
-}
-
-console.log( secante( 2, 1, 0.0001 ) );
+    if(fa*fb < 0){
+        do{
+            if(fx == 0){
+                return output;
+            }
+            else if(fa*fx < 0){
+                b = x;
+                fb = f(x);
+            }else{
+                a = x;
+                fa = f(x);
+            }
+            x = ((a*fb)-(b*fa))/(fb-fa);
+            fx = f(x);
+            output.push({
+                "a": a,
+                "b": b,
+                "x": x,
+                "f(a)": fa,
+                "f(b)": fb,
+                "f(x)": fx
+            });
+        }while(Math.abs(fx) > e)
+        return output;
+    }
+    else{
+        return `f(-1)*f(1) >= 0`;
+    }
+};
+console.log( falsePosition(-1, 1, 1e-9) );

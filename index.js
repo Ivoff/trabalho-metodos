@@ -8,7 +8,11 @@ const child_process = require('child_process');
 const PORT = process.env.PORT || 3000; 
 
 const lagrange = require("./interpolation/lagrange").lagrange;
-const formaNewton = require("./interpolation/formaNewton")
+const formaNewton = require("./interpolation/formaNewton");
+const splineLinear = require("./interpolation/splineLinear");
+
+const knownStandardDeviation = require("./confidenceInterval/knownStandardDeviation");
+const unknownStandardDeviation = require("./confidenceInterval/unknownStandardDeviation");
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -253,6 +257,20 @@ app.post("/formaNewton", (req, res) => {
 
 app.post("/splineLinear", (req, res) => {
     const content = req.body;
+    res.send(splineLinear(content));
+});
+
+app.post("/intervaloConfianca/conhecido", (req, res) => {
+    const content = req.body;
+    res.send(knownStandardDeviation(content.estimator, content.confidenceLevel, content.sigma, content.n));
+});
+
+app.post("/intervaloConfianca/desconhecido", (req, res) => {
+    const content = req.body;    
+    res.send(unknownStandardDeviation(content.estimator, content.confidenceLevel, content.deviation, content.n));
+});
+
+app.post("/kendall", (req, res) => {
     
 });
 
