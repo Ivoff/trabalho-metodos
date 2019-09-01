@@ -1,5 +1,7 @@
 # trabalho-metodos
+
 ## Ambiente
+- Linux ubuntu
 - NodeJS 10.16.0
 - Postman
 
@@ -22,7 +24,7 @@ Eu implementei 14 métodos dos 18, todos por POST e body raw no postman
 - spline linear: http://localhost:3000/splineLinear
 - intervalo de confiança conhecido: http://localhost:3000/intervaloConfianca/conhecido
 - intervalo de confiaça desconhecido: http://localhost:3000/intervaloConfianca/desconhecido
-- coeficiente de correlação de kenndal: http://localhost:3000/kendall
+- coeficiente de correlação de kendall: http://localhost:3000/kendall
 - coeficiente de correlação de pearson: http://localhost:3000/pearson
 - coeficiente de correlação de spearman: http://localhost:3000/spearman
 - reamostragem jackknife: http://localhost:3000/jackknife
@@ -92,10 +94,18 @@ Suporta todo tipo de expressão matemática eu acho, a função pode ser escrita
 - deviation: desvio populacional/amostra
 - n: quantidade de elementos
 
-### coeficiente de correlação de kendall
+### coeficiente de correlação de kendall, pearson, spearman
 ```
 {
 	"x": [71,64,43,67,56,73,68,56,76,65,45,58,45,53,49,78,73,68],
 	"y": [82,91,100,68,87,73,78,80,65,84,116,76,97,100,105,77,73,78]
 }
 ```
+### reamostragem jackknife e bootstrap
+```
+{
+	"data": [2.2, 2.5, 3.4, 6.7, 6.2, 8.2, 9.2, 7.9, 9.2, 10.1],
+	"estimatorString": "media"
+}
+```
+- estimatorString: era pra poder selecionar o estimador, porém eu não implementei a tempo, então só tem média, mas podia ter mais
