@@ -18,6 +18,9 @@ const kendall = require("./correlationCoefficient/kendall");
 const pearson = require("./correlationCoefficient/pearson");
 const spearman = require("./correlationCoefficient/spearman");
 
+const jackknife = require("./resample/jacckknife");
+const bootstrap = require("./resample/bootstrap");
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -287,6 +290,16 @@ app.post("/pearson", (req, res) => {
 app.post("/spearman", (req, res) => {
     const content = req.body;
     res.send({"correlacao": spearman(content.x, content.y)});
+});
+
+app.post("/jackknife", (req, res) => {
+    const content = req.body;
+    res.send(jackknife(content.data, content.estimatorString));
+});
+
+app.post("/bootstrap", (req, res) => {
+    const content = req.body;
+    res.send(bootstrap(content.data, content.estimatorString));
 });
 
 app.listen(PORT, ()  =>{

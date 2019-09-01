@@ -1,12 +1,12 @@
 function f(x){
-    return x**2 + 2*x -1;
+    return Math.E**x - x - 5;
 }
-function falsePosition(a, b, e){
-    let fa = f(a);
-    let fb = f(b);
-    let x = ((a*fb)-(b*fa))/(fb-fa);
-    let fx = f(x);
-    output = [];
+
+function bisection(a, b, e){
+    let n = 0;
+    let output = [];
+    let x = (a+b)/2;
+    let fa = f(a), fb = f(b), fx = f(x);
     output.push({
         "a": a,
         "b": b,
@@ -27,8 +27,8 @@ function falsePosition(a, b, e){
                 a = x;
                 fa = f(x);
             }
-            x = ((a*fb)-(b*fa))/(fb-fa);
-            fx = f(x);
+            x = (a+b)/2;
+            fx = f(x);                
             output.push({
                 "a": a,
                 "b": b,
@@ -37,11 +37,16 @@ function falsePosition(a, b, e){
                 "f(b)": fb,
                 "f(x)": fx
             });
+            console.log(output);
+            n += 1
+            if(n == 100)
+                break;
         }while(Math.abs(fx) > e)
         return output;
     }
     else{
-        return `f(-1)*f(1) >= 0`;
+        return `f(2)*f(1.5) >= 0`;
     }
 };
-console.log( falsePosition(-1, 1, 1e-9) );
+
+console.log( bisection(2, 1.5, 0.01) );

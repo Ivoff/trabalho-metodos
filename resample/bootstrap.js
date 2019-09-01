@@ -1,5 +1,4 @@
-//let data = [2.2, 2.5, 6.4, 6.7, 6.2, 8.2, 9.2, 7.9, 9.2, 10.1];
-function jackknife(data, estimatorString){
+function bootstrap(data, estimatorString){
     let estimator = {
         "media": (data) => {
             let output = 0;
@@ -8,53 +7,55 @@ function jackknife(data, estimatorString){
             });
             return output;
         },
-        "mediana": (data) => {
+        /*"mediana": (data) => {
             data.sort((a, b)=>{
                 return a - b;
             });
-            if(!(data.length % 2)){
-                return data[data.length/2];
+            console.log(data);
+            if((data.length % 2)){
+                console.log(`meio? ${Math.ceil(data.length/2)}`);
+                return data[Math.ceil(data.length/2)];
             }else{
                 return (data[Math.ceil(data.length/2)] + data[Math.floor(data.length/2)])/2;
             }
-        }/*,
+        }*//*,
         "moda": (data) => {
             data.sort((a, b)=>{
                 return a - b;
             });
-            let moda = 0;
+            let moda ={
+                "times": 0 
+            };
             let aux = 0;
             for(let i = 0; i < data.length-1; i += 1){
                 if(data[i] == data[i+1]){
                     aux += 1;
-                }else if(moda < aux){
-                    moda = aux;
+                }else if(moda.times < aux){
+                    moda.times = aux;
+                    moda.indexValue = data[i];
                     aux = 0;                
                 }else{
                     aux = 0;
                 }
             }
-            return moda;
+            return moda.indexValue;
         }*/
     };
 
-    let theta = estimator[estimatorString](data);
-    let aux = [];
-    let output = 0;
-    let estimator_array = [];
+    let estimatorData = [];
+    let aux = [];    
+    
     for(let i = 0; i < data.length; i += 1){
         aux = data.slice();
-        aux.splice(i, 1);
-        estimator_array.push(estimator.media(aux) - theta);
-        output += (estimator.media(aux) - theta) * (estimator.media(aux) - theta);
+        aux.splice(Math.floor(Math.random()*10), 1);
+        estimatorData.push( estimator[estimatorString](aux) );
     }
-    output = ((data.length - 1)/data.length) * output;
-    /*console.log(estimator_array);
-    console.log(output);*/
+    let output;
+    output = estimator[estimatorString](estimatorData);
     return {
-        "estimatorArray": estimator_array,
+        "OriginalDataEstimator": estimator[estimatorString](data),
+        "estimatorArray": estimatorData,
         "estimatorArray-estimator": output
     };
 }
-
-module.exports = jackknife;
+module.exports = bootstrap;

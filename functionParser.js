@@ -29,7 +29,10 @@ replaceFunctions = (input)=>{
     input = input.replace(/sen/g, "Math.sin");
     input = input.replace(/tan/g, "Math.tan");
     input = input.replace(/tg/g, "Math.tan");
+    input = input.replace(/log10/g, "Math.log10");
+    input = input.replace(/log2/g, "Math.log2");
     input = input.replace(/log/g, "Math.log");
+    input = input.replace(/e/g, "Math.E");
     
     // caso ln
     position = input.search("ln");    
@@ -57,5 +60,6 @@ module.exports = functionParser = (input) => {
     input = replaceImplicitProduct(input);
     input = replaceFunctions(input);
     input = replaceRoot(input);
+    console.log(input);
     return input;
 }
